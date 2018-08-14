@@ -14,9 +14,27 @@ class ViewController: UIViewController {
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tipControl: UISegmentedControl!
+    @IBOutlet weak var clearButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "timeOpened") != nil) {
+            let timeOpened = defaults.object(forKey:"timeOpened") as! Date
+            let interval = Date().timeIntervalSince(timeOpened)
+            
+            if (interval < 600 && defaults.double(forKey: "billAmount") != 0) {
+                let billAmount = defaults.double(forKey: "billAmount")
+                billField.text = "\(billAmount)"
+                loadInitialValues()
+            } else {
+                defaults.set(0, forKey: "billAmount")
+            }
+        }
+
+        defaults.set(NSDate.init(), forKey: "timeOpened")
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -51,8 +69,13 @@ class ViewController: UIViewController {
             
         tipLabel.text = String(format: "$%.2f", tip)
         totalLabel.text = String(format: "$%.2f", total)
+        
+        let defaults = UserDefaults.standard
+        defaults.set(bill, forKey: "billAmount")
     }
-    
-    
+    @IBAction func clearButton(_ sender: Any) {
+        billField.text = ""
+        calculateTip("")
+    }
 }
 
