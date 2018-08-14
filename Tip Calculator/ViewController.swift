@@ -27,12 +27,14 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        billField.becomeFirstResponder()
         loadInitialValues()
     }
     
     func loadInitialValues() {
         let defaults = UserDefaults.standard
         tipControl.selectedSegmentIndex = Int(defaults.integer(forKey: "defaultTipPercentage"))
+        calculateTip("")
     }
 
     @IBAction func onTap(_ sender: Any) {
