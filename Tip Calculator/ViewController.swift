@@ -24,6 +24,16 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadInitialValues()
+    }
+    
+    func loadInitialValues() {
+        let defaults = UserDefaults.standard
+        tipControl.selectedSegmentIndex = Int(defaults.integer(forKey: "defaultTipPercentage"))
+    }
 
     @IBAction func onTap(_ sender: Any) {
         // Dismisses keyboard
@@ -31,7 +41,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calculateTip(_ sender: Any) {
-        
         let tipPercentages = [0.18, 0.2, 0.25]
         
         let bill = Double(billField.text!) ?? 0
